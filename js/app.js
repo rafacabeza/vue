@@ -9,7 +9,12 @@ Vue.component('user', {
             }
         }
     },
-    template: '<div><h1>{{ app.name }} </h1><h3>{{ name }} {{ lastName }}</h3></div>'
+    template: `<div>
+        <h1>{{ app.name }} </h1>
+        <h3>Nombre: {{ name }} {{ lastName }}</h3>
+        <input v-model="name">
+        <input v-model="app.name">
+    </div>`
 });
 
 var app = new Vue({
