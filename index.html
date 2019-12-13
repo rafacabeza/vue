@@ -20,14 +20,12 @@
                     <input v-on:keyup.enter="addTask" v-model="newTask" type="text" class="form-control">
                     <button v-on:click="addTask()" class="btn btn-primary">+</button>
                 </li>
+                <li>
+                    {{ reversedTask }}
+                </li>
             </ul>
             
             
-            <h1> hola <span v-text="message"> </span></h1>
-            
-            <input type="text" name="" id="" v-model="message">
-            <button v-on:click="reverse">Invertir</button>
-
             <pre>{{ $data }}</pre>
         </div>
     </div>
@@ -38,7 +36,6 @@
         var app = new Vue({
             el: '#app',
             data: {
-                message: "aprendiendo",
                 newTask: "",
                 tasks: [
                     {text: "saludar", completed: true},
@@ -47,9 +44,6 @@
                 ]
             },
             methods: {
-                reverse: function() {
-                    this.message = this.message.split('').reverse().join('');
-                },
                 addTask() {
                     if (this.newTask) {
                         this.tasks.push({
@@ -61,6 +55,11 @@
                 },
                 toggle() {
                     alert ("lakjdf");
+                }
+            },
+            computed: {
+                reversedTask: function() {
+                    return this.newTask.split('').reverse().join('');
                 }
             }
         });
