@@ -8,7 +8,16 @@
 </head>
 <body>
     <div id="app">
-        <h1> hola {{ message }}</h1>
+        <h1>Lista de tareas</h1>
+        <ul>
+            <li v-for="task in tasks"> <span v-text="task.text"></span></span>  <small>{{ task.completed ? 'completa' : 'incompleta'}}</small> </li>
+        </ul>
+
+
+        <h1 v-show="message.length > 4"> hola <span v-text="message"> </span></h1>
+        <h1 v-if="message.length > 4"> hola <span v-text="message"> </span></h1>
+        <h4 v-else> Nombre muy corto </span></h4>
+
 
         <input type="text" name="" id="" v-model="message">
     </div>
@@ -18,6 +27,11 @@
             el: '#app',
             data: {
                 message: "aprendiendo",
+                tasks: [
+                    {text: "saludar", completed: true},
+                    {text: "trabajar", completed: false},
+                    {text: "despedir", completed: false}
+                ]
             },
         });
     </script>
