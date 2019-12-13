@@ -1,6 +1,15 @@
+//ver que data es una función
+//ver que el template tiene que tener un elemengo que lo englobe todo. Aquí div
 Vue.component('user', {
     props: ['name', 'lastName'],
-    template: '<h1>{{ name }} {{ lastName }}</h1>'
+    data: function() {
+        return {
+            app: {
+                name: 'Santiago Hernandez'
+            }
+        }
+    },
+    template: '<div><h1>{{ app.name }} </h1><h3>{{ name }} {{ lastName }}</h3></div>'
 });
 
 var app = new Vue({
