@@ -4,13 +4,13 @@ Vue.component('tasks', {
     template: `
     <div>
     <h1>Lista de tareas</h1>
-    <h3>Tareas completadas {{ completedTasks }}</h3>
-    <h3>Tareas no completadas {{ uncompletedTasks }}</h3>
+    <h3>Tareas completadas {{ completed }}</h3>
+    <h3>Tareas no completadas {{ uncompleted }}</h3>
     <ul>
         <li is="task" v-for="task in tasks" :task="task" :key="task.text"></li>
         <li class="form-inline">
-            <input v-on:keyup.enter="addTask" v-model="newTask" type="text" class="form-control">
-            <button v-on:click="addTask()" class="btn btn-primary">+</button>
+            <input v-on:keyup.enter="add" v-model="newTask" type="text" class="form-control">
+            <button v-on:click="add()" class="btn btn-primary">+</button>
         </li>
         <li>
             {{ reversedTask }}
@@ -19,7 +19,7 @@ Vue.component('tasks', {
     </div>    
     `,
     methods: {
-        addTask() {
+        add() {
             if (this.newTask) {
                 this.tasks.push({
                     text: this.newTask,
@@ -43,12 +43,12 @@ Vue.component('tasks', {
         reversedTask: function() {
             return this.newTask.split('').reverse().join('');
         }, 
-        completedTasks: function () {
+        completed: function () {
             return this.tasks.filter(function (task) {
                 return task.completed;
             }).length;
         }, 
-        uncompletedTasks: function () {
+        uncompleted: function () {
             return this.tasks.filter(function (task) {
                 return !task.completed;
             }).length;
@@ -61,7 +61,7 @@ Vue.component('task', {
     props: ['task'],
     template: `<li > 
         <span v-text="task.text"></span> 
-        <span @click="toggle()" v-bind:class="taskIcon"></span> 
+        <span @click="toggle()" v-bind:class="icon"></span> 
         </li>`,
         methods: {
             toggle() {
@@ -69,7 +69,7 @@ Vue.component('task', {
             }
         },
         computed: {
-        taskIcon() {
+        icon() {
             console.log("icon");
             return ['glyphicon', this.task.completed ? 'glyphicon-check' : 'glyphicon-unchecked'];
         }
