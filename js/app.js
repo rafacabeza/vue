@@ -2,23 +2,21 @@
 //ver que el template tiene que tener un elemengo que lo englobe todo. Aquí div
 Vue.component('tasks', {
     template: `
-    <section class="todoapp">
-    <header class="header">
-    <h1>Tareas</h1>
-    <input v-on:keyup.enter="add" v-model="newTask" type="text" class="new-todo">
-    </header>
-    <section>
-    <ul class="todo-list">
-    <li class="todo" is="task" v-for="task in tasks" :task="task" :key="task.text"></li>
-    <li class="form-inline">
-    </li>
-    </ul>
-    </section>    
-    <footer class="footer">
-        <span class="todo-count">Completas {{ completed }} | </span> 
-        <span class="todo-count"> Incompletas {{ uncompleted }} </span>
-    </footer>
-    `,
+        <section class="todoapp">
+            <header class="header">
+            <h1>Tareas</h1>
+            <input v-on:keyup.enter="add" v-model="newTask" type="text" class="new-todo" placeholder="¿Qué hay que hacer?">
+            </header>
+            <section>
+            <ul class="todo-list">
+                <li class="todo" is="task" v-for="task in tasks" :task="task" :key="task.text"></li>
+            </ul>
+            </section>    
+            <footer class="footer" v-show="tasks.length">
+                <span class="todo-count">Completas {{ completed }} | </span> 
+                <span class="todo-count"> Incompletas {{ uncompleted }} </span>
+            </footer>
+        </section>`,
     methods: {
         add() {
             if (this.newTask) {
@@ -41,9 +39,6 @@ Vue.component('tasks', {
         }
     },
     computed: {
-        reversedTask: function() {
-            return this.newTask.split('').reverse().join('');
-        }, 
         completed: function () {
             return this.tasks.filter(function (task) {
                 return task.completed;
@@ -61,15 +56,50 @@ Vue.component('tasks', {
 Vue.component('task', {
     props: ['task'],
     template: `<li :class="classes"> 
-        <div class="view">
-            <input type="checkbox" class="toggle" v-model="task.completed"></span> 
-            <label v-text="task.text"></label> 
-        </div>
+            <div class="view">
+                <input type="checkbox" class="toggle" v-model="task.completed"></span> 
+                <label v-text="task.text" @dblclick="edit()"></label> 
+                <button class="destroy" @click="remove()"></button>
+            </div>
+            <input class="edit" 
+                v-model="task.text" 
+                @keyup.enter="dontEdit()" 
+                @keyup.esc="cancelEdit()" 
+                @blur="dontEdit()" />
         </li>`,
+    data: function() {
+        return {
+            editing: false,
+            oldText: ''
+        }
+    },
+    methods: {
+        edit: function () {
+            this.oldText = this.task.text;
+            this.editing = true;
+            console.log('editar');
+        },
+        dontEdit: function () {
+            if (! this.task.text) {
+                this.remove();
+            }
+            this.editing = false;
+            console.log('NO editar');
+        },
+        cancelEdit: function () {
+            this.editing = false;
+            this.task.title = this.oldText;
+            console.log('NO editar');
+        },
+        remove: function() {
+            let tasks = this.$parent.tasks;
+            tasks.splice(tasks.indexOf(this.task), 1);
+        }
+    },
     computed: {
         classes() {
             console.log("icon");
-            return {completed: this.task.completed};
+            return {completed: this.task.completed, editing: this.editing};
         }
     }
 });
