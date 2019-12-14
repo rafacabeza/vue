@@ -2,21 +2,22 @@
 //ver que el template tiene que tener un elemengo que lo englobe todo. Aquí div
 Vue.component('tasks', {
     template: `
-    <div>
-    <h1>Lista de tareas</h1>
-    <h3>Tareas completadas {{ completed }}</h3>
-    <h3>Tareas no completadas {{ uncompleted }}</h3>
-    <ul>
-        <li is="task" v-for="task in tasks" :task="task" :key="task.text"></li>
-        <li class="form-inline">
-            <input v-on:keyup.enter="add" v-model="newTask" type="text" class="form-control">
-            <button v-on:click="add()" class="btn btn-primary">+</button>
-        </li>
-        <li>
-            {{ reversedTask }}
-        </li>
+    <section class="todoapp">
+    <header class="header">
+    <h1>Tareas</h1>
+    <input v-on:keyup.enter="add" v-model="newTask" type="text" class="new-todo">
+    </header>
+    <section>
+    <ul class="todo-list">
+    <li class="todo" is="task" v-for="task in tasks" :task="task" :key="task.text"></li>
+    <li class="form-inline">
+    </li>
     </ul>
-    </div>    
+    </section>    
+    <footer class="footer">
+        <span class="todo-count">Completas {{ completed }} | </span> 
+        <span class="todo-count"> Incompletas {{ uncompleted }} </span>
+    </footer>
     `,
     methods: {
         add() {
@@ -59,19 +60,16 @@ Vue.component('tasks', {
 
 Vue.component('task', {
     props: ['task'],
-    template: `<li > 
-        <span v-text="task.text"></span> 
-        <span @click="toggle()" v-bind:class="icon"></span> 
+    template: `<li :class="classes"> 
+        <div class="view">
+            <input type="checkbox" class="toggle" v-model="task.completed"></span> 
+            <label v-text="task.text"></label> 
+        </div>
         </li>`,
-        methods: {
-            toggle() {
-                this.task.completed = ! this.task.completed;
-            }
-        },
-        computed: {
-        icon() {
+    computed: {
+        classes() {
             console.log("icon");
-            return ['glyphicon', this.task.completed ? 'glyphicon-check' : 'glyphicon-unchecked'];
+            return {completed: this.task.completed};
         }
     }
 });
