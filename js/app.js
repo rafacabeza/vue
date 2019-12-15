@@ -77,6 +77,10 @@ Vue.component('task', {
         edit: function () {
             this.oldText = this.task.text;
             this.editing = true;
+            // console.log(this.$el);
+            // console.log(this.$el.children[1]);
+            // this.$el.children[1].focus();
+            this.$nextTick(() => this.$el.children[1].focus());
         },
         dontEdit: function () {
             if (! this.task.text) {
