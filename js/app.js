@@ -79,7 +79,8 @@ Vue.component('task', {
             this.editing = true;
             // console.log(this.$el);
             // console.log(this.$el.children[1]);
-            // this.$el.children[1].focus();
+            // this.$el.children[1].focus(); // no va, hace falta nextTick 
+            // nextTick lanza lo que sea tras actualizar el DOM
             this.$nextTick(() => this.$el.children[1].focus());
         },
         dontEdit: function () {
