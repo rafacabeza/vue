@@ -9,7 +9,7 @@ Vue.component('tasks', {
             </header>
             <section>
             <ul class="todo-list">
-                <li class="todo" is="task" v-for="task in tasks" :task="task" :key="task.text"></li>
+                <li class="todo" is="task" v-for="task in tasks" :task="task" :key="task.index"></li>
             </ul>
             </section>    
             <footer class="footer" v-show="tasks.length">
@@ -32,9 +32,9 @@ Vue.component('tasks', {
         return {
             newTask: "",
             tasks: [
-                {text: "saludar", completed: true},
-                {text: "trabajar", completed: false},
-                {text: "despedir", completed: false}
+                {index: 0, text: "saludar", completed: true},
+                {index: 1, text: "trabajar", completed: false},
+                {index: 2, text: "despedir", completed: false}
             ]
         }
     },
@@ -77,19 +77,16 @@ Vue.component('task', {
         edit: function () {
             this.oldText = this.task.text;
             this.editing = true;
-            console.log('editar');
         },
         dontEdit: function () {
             if (! this.task.text) {
                 this.remove();
             }
             this.editing = false;
-            console.log('NO editar');
         },
         cancelEdit: function () {
             this.editing = false;
-            this.task.title = this.oldText;
-            console.log('NO editar');
+            this.task.text = this.oldText;
         },
         remove: function() {
             let tasks = this.$parent.tasks;
